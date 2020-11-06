@@ -43,7 +43,7 @@ namespace ICSharpCode.Decompiler.Tests.TestCases.Pretty
 			{
 				State.False => false,
 				State.True => true,
-				State.Null => null,
+				State.Null => (bool?)null,
 				_ => throw new InvalidOperationException(),
 			};
 		}

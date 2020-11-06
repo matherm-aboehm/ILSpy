@@ -74,9 +74,11 @@ namespace ILSpy.BamlDecompiler
 		void LoadBaml(AvalonEditTextOutput output, CancellationToken cancellationToken)
 		{
 			var asm = this.Ancestors().OfType<AssemblyTreeNode>().First().LoadedAssembly;
-			using var data = OpenStream();
-			XDocument xamlDocument = LoadIntoDocument(asm.GetPEFileOrNull(), asm.GetAssemblyResolver(), data, cancellationToken);
-			output.Write(xamlDocument.ToString());
+			using (var data = OpenStream())
+			{
+			    XDocument xamlDocument = LoadIntoDocument(asm.GetPEFileOrNull(), asm.GetAssemblyResolver(), data, cancellationToken);
+			    output.Write(xamlDocument.ToString());
+			}
 		}
 
 		internal static XDocument LoadIntoDocument(PEFile module, IAssemblyResolver assemblyResolver,
