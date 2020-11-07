@@ -139,7 +139,7 @@ namespace ICSharpCode.Decompiler.TypeSystem
 
 		public IType GetTypeFromReference(SRM.MetadataReader reader, SRM.TypeReferenceHandle handle, byte rawTypeKind)
 		{
-			IModule resolvedModule = module?.GetDeclaringModule(handle);
+			IModule resolvedModule = module != null ? module.GetDeclaringModule(handle) : new MetadataModule(compilation, reader).GetDeclaringModule(handle);
 			var fullTypeName = handle.GetFullTypeName(reader);
 			IType type;
 			if (resolvedModule != null)

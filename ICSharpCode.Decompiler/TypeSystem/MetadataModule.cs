@@ -52,10 +52,15 @@ namespace ICSharpCode.Decompiler.TypeSystem
 		readonly IModule[] referencedAssemblies;
 
 		internal MetadataModule(ICompilation compilation, Metadata.PEFile peFile, TypeSystemOptions options)
+			: this(compilation, peFile.Metadata, options)
+		{
+			this.PEFile = peFile;
+		}
+
+		internal MetadataModule(ICompilation compilation, MetadataReader metadata, TypeSystemOptions options = TypeSystemOptions.Uncached)
 		{
 			this.Compilation = compilation;
-			this.PEFile = peFile;
-			this.metadata = peFile.Metadata;
+			this.metadata = metadata;
 			this.options = options;
 			this.TypeProvider = new TypeProvider(this);
 
