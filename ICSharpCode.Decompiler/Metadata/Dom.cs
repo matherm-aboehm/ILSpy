@@ -54,6 +54,32 @@ namespace ICSharpCode.Decompiler.Metadata
 		}
 	}
 
+	public class StreamResource : Resource
+	{
+		public override string Name { get; }
+		Stream stream;
+
+		public StreamResource(string name, Stream stream)
+		{
+			this.Name = name ?? throw new ArgumentNullException(nameof(name));
+			this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
+		}
+
+		public override Stream TryOpenStream()
+		{
+			if (stream.CanSeek)
+				stream.Seek(0, SeekOrigin.Begin);
+			else
+			{
+				var memstream = new MemoryStream();
+				stream.CopyTo(memstream);
+				memstream.Position = 0;
+				stream = memstream;
+			}
+			return stream;
+		}
+	}
+
 	sealed class MetadataResource : Resource
 	{
 		public PEFile Module { get; }

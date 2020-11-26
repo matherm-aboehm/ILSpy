@@ -71,6 +71,11 @@ namespace ICSharpCode.ILSpy.TreeNodes
 			return Create(new ByteArrayResource(name, data));
 		}
 
+		public static ILSpyTreeNode Create(string name, Stream stream)
+		{
+			return Create(new StreamResource(name, stream));
+		}
+
 		public override void Decompile(Language language, ITextOutput output, DecompilationOptions options)
 		{
 			using var data = OpenStream();

@@ -102,10 +102,14 @@ namespace ICSharpCode.ILSpy.TreeNodes
 				Children.Add(ResourceEntryNode.Create(entry.Key, (byte[])entry.Value));
 				return;
 			}
-
-			if (entry.Value is MemoryStream ms)
+			else if (entry.Value is MemoryStream ms)
 			{
 				Children.Add(ResourceEntryNode.Create(entry.Key, ms.ToArray()));
+				return;
+			}
+			else if(entry.Value is Stream)
+			{
+				Children.Add(ResourceEntryNode.Create(entry.Key, (Stream)entry.Value));
 				return;
 			}
 
