@@ -950,15 +950,20 @@ namespace ICSharpCode.Decompiler.CSharp
 				if (!(target.Kind == VariableKind.Parameter && target.Index == i))
 					return false;
 
-				if (getter is not Call call || call.Arguments.Count != 1)
-					return false;
-				if (!call.Arguments[0].MatchLdThis())
-					return false;
+				if (getter is Call call)
+				{
+					if (call.Arguments.Count != 1)
+						return false;
+					if (!call.Arguments[0].MatchLdThis())
+						return false;
 
-				if (!call.Method.IsAccessor)
-					return false;
-				var autoProperty = (IProperty)call.Method.AccessorOwner;
-				if (!autoPropertyToBackingField.ContainsKey(autoProperty))
+					if (!call.Method.IsAccessor)
+						return false;
+					var autoProperty = (IProperty)call.Method.AccessorOwner;
+					if (!autoPropertyToBackingField.ContainsKey(autoProperty))
+						return false;
+				}
+				else
 					return false;
 			}
 

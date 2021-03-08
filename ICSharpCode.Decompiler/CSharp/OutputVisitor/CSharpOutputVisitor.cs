@@ -268,14 +268,17 @@ namespace ICSharpCode.Decompiler.CSharp.OutputVisitor
 
 			bool SkipNewLine()
 			{
-				if (containerStack.Peek() is not Accessor accessor)
+				if (containerStack.Peek() is Accessor accessor)
+				{
+					if (!(role == PropertyDeclaration.GetterRole || role == PropertyDeclaration.SetterRole))
+						return false;
+					bool isAutoProperty = accessor.Body.IsNull
+						&& !accessor.Attributes.Any()
+						&& policy.AutoPropertyFormatting == PropertyFormatting.SingleLine;
+					return isAutoProperty;
+				}
+				else
 					return false;
-				if (!(role == PropertyDeclaration.GetterRole || role == PropertyDeclaration.SetterRole))
-					return false;
-				bool isAutoProperty = accessor.Body.IsNull
-					&& !accessor.Attributes.Any()
-					&& policy.AutoPropertyFormatting == PropertyFormatting.SingleLine;
-				return isAutoProperty;
 			}
 		}
 
@@ -725,12 +728,10 @@ namespace ICSharpCode.Decompiler.CSharp.OutputVisitor
 					case ThisReferenceExpression _:
 					case PrimitiveExpression _:
 					case IdentifierExpression _:
-					case MemberReferenceExpression
-					{
-						Target: ThisReferenceExpression
-							or IdentifierExpression
-							or BaseReferenceExpression
-					} _:
+					case MemberReferenceExpression me
+						when me.Target is ThisReferenceExpression ||
+						me.Target is IdentifierExpression ||
+						me.Target is BaseReferenceExpression:
 						return true;
 					default:
 						return false;

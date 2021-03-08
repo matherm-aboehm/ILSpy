@@ -15,7 +15,7 @@
     <Description>ILSpy</Description>
     <Version>1.7.1.0</Version>
     <FileVersion>1.7.1.0</FileVersion>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
 
     <EnableDefaultItems>False</EnableDefaultItems>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -47,6 +47,10 @@
   <Import Project="..\packages.props" />
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.3.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="15.9.3" />
     <!-- Intentionally using an old Roslyn version in the AddIn, so that we stay compatible with old VS versions. -->
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.4.0" />
